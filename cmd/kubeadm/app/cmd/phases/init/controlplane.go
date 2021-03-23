@@ -100,6 +100,7 @@ func getControlPlanePhaseFlags(name string) []string {
 		options.CertificatesDir,
 		options.KubernetesVersion,
 		options.ImageRepository,
+		options.EtcdVersion,
 		options.Patches,
 	}
 	if name == "all" || name == kubeadmconstants.KubeAPIServer {

@@ -37,12 +37,18 @@ const (
 
 	// ControllerManagerExtraArgs flag sets extra flags to pass to the Controller Manager or override default ones in form of <flagname>=<value>.
 	ControllerManagerExtraArgs = "controller-manager-extra-args"
+	
+	// CoreDNSVersion flag sets the CoreDNS version for the control plane.
+	CoreDNSVersion = "coredns-version"	
 
 	// ControlPlaneEndpoint flag sets a stable IP address or DNS name for the control plane.
 	ControlPlaneEndpoint = "control-plane-endpoint"
 
 	// DryRun flag instruct kubeadm to don't apply any changes; just output what would be done.
 	DryRun = "dry-run"
+	
+	// EtcdVersion flag sets the ETCD version for the control plane.          
+        EtcdVersion = "etcd-version"
 
 	// FeatureGatesString flag sets key=value pairs that describe feature gates for various features.
 	FeatureGatesString = "feature-gates"

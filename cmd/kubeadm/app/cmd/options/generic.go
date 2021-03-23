@@ -62,6 +62,16 @@ func AddImageMetaFlags(fs *pflag.FlagSet, imageRepository *string) {
 	fs.StringVar(imageRepository, ImageRepository, *imageRepository, "Choose a container registry to pull control plane images from")
 }
 
+// AddImageMetaEtcdFlags adds the --etcd-version flag to the given flagset
+func AddImageMetaEtcdFlags(fs *pflag.FlagSet, etcdVersion *string) {
+        fs.StringVar(etcdVersion, EtcdVersion, *etcdVersion, "Choose a version of ETCD to pull control plane images from")
+}
+
+// AddImageMetaCoreDNSFlags adds the --coredns-version flag to the given flagset
+func AddImageMetaCoreDNSFlags(fs *pflag.FlagSet, coreDNSVersion *string) {
+        fs.StringVar(coreDNSVersion, CoreDNSVersion, *coreDNSVersion, "Choose a version of CoreDNS to pull control plane images from")
+}
+
 // AddFeatureGatesStringFlag adds the --feature-gates flag to the given flagset
 func AddFeatureGatesStringFlag(fs *pflag.FlagSet, featureGatesString *string) {
 	if knownFeatures := features.KnownFeatures(&features.InitFeatureGates); len(knownFeatures) > 0 {
