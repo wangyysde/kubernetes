@@ -25,7 +25,6 @@ import (
 
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
-	batchv1beta1 "k8s.io/api/batch/v1beta1"
 	v1 "k8s.io/api/core/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
@@ -110,7 +109,7 @@ var (
 	gcInformerResyncRetryTimeout = time.Minute
 
 	// CronJobGroupVersionResource unambiguously identifies a CronJob resource.
-	CronJobGroupVersionResource = schema.GroupVersionResource{Group: batchv1beta1.GroupName, Version: "v1beta1", Resource: "cronjobs"}
+	CronJobGroupVersionResource = schema.GroupVersionResource{Group: batchv1.GroupName, Version: "v1", Resource: "cronjobs"}
 )
 
 func getPodTemplateSpec(labels map[string]string) v1.PodTemplateSpec {
@@ -231,7 +230,7 @@ func verifyRemainingObjects(f *framework.Framework, objects map[string]int) (boo
 				ginkgo.By(fmt.Sprintf("expected %d RCs, got %d RCs", num, len(rcs.Items)))
 			}
 		case "CronJobs":
-			cronJobs, err := f.ClientSet.BatchV1beta1().CronJobs(f.Namespace.Name).List(context.TODO(), metav1.ListOptions{})
+			cronJobs, err := f.ClientSet.BatchV1().CronJobs(f.Namespace.Name).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
 				return false, fmt.Errorf("failed to list cronjobs: %v", err)
 			}
@@ -273,19 +272,19 @@ func gatherMetrics(f *framework.Framework) {
 	}
 }
 
-func newCronJob(name, schedule string) *batchv1beta1.CronJob {
+func newCronJob(name, schedule string) *batchv1.CronJob {
 	parallelism := int32(1)
 	completions := int32(1)
-	return &batchv1beta1.CronJob{
+	return &batchv1.CronJob{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: name,
 		},
 		TypeMeta: metav1.TypeMeta{
 			Kind: "CronJob",
 		},
-		Spec: batchv1beta1.CronJobSpec{
+		Spec: batchv1.CronJobSpec{
 			Schedule: schedule,
-			JobTemplate: batchv1beta1.JobTemplateSpec{
+			JobTemplate: batchv1.JobTemplateSpec{
 				Spec: batchv1.JobSpec{
 					Parallelism: &parallelism,
 					Completions: &completions,
@@ -1178,7 +1177,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		}
 
 		ginkgo.By("Delete the cronjob")
-		if err := f.ClientSet.BatchV1beta1().CronJobs(f.Namespace.Name).Delete(context.TODO(), cronJob.Name, getBackgroundOptions()); err != nil {
+		if err := f.ClientSet.BatchV1().CronJobs(f.Namespace.Name).Delete(context.TODO(), cronJob.Name, getBackgroundOptions()); err != nil {
 			framework.Failf("Failed to delete the CronJob: %v", err)
 		}
 		ginkgo.By("Verify if cronjob does not leave jobs nor pods behind")

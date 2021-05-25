@@ -24,7 +24,6 @@ import (
 	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
-	batchv1beta1 "k8s.io/api/batch/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -57,19 +56,19 @@ func setup(t *testing.T) (*httptest.Server, framework.CloseFunc, *cronjob.Contro
 	return server, closeFn, cjc, jc, informerSet, clientSet, config
 }
 
-func newCronJob(name, namespace, schedule string) *batchv1beta1.CronJob {
+func newCronJob(name, namespace, schedule string) *batchv1.CronJob {
 	zero64 := int64(0)
 	zero32 := int32(0)
-	return &batchv1beta1.CronJob{
+	return &batchv1.CronJob{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "CronJob",
-			APIVersion: "batch/v1beta1",
+			APIVersion: "batch/v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: namespace,
 			Name:      name,
 		},
-		Spec: batchv1beta1.CronJobSpec{
+		Spec: batchv1.CronJobSpec{
 			Schedule:                   schedule,
 			SuccessfulJobsHistoryLimit: &zero32,
 			JobTemplate: batchv1beta1.JobTemplateSpec{
@@ -87,7 +86,7 @@ func newCronJob(name, namespace, schedule string) *batchv1beta1.CronJob {
 	}
 }
 
-func cleanupCronJobs(t *testing.T, cjClient clientbatchv1beta1.CronJobInterface, name string) {
+func cleanupCronJobs(t *testing.T, cjClient clientbatchv1.CronJobInterface, name string) {
 	deletePropagation := metav1.DeletePropagationForeground
 	err := cjClient.Delete(context.TODO(), name, metav1.DeleteOptions{PropagationPolicy: &deletePropagation})
 	if err != nil {
@@ -154,7 +153,7 @@ func TestCronJobLaunchesPodAndCleansUp(t *testing.T) {
 	ns := framework.CreateTestingNamespace(namespaceName, server, t)
 	defer framework.DeleteTestingNamespace(ns, server, t)
 
-	cjClient := clientSet.BatchV1beta1().CronJobs(ns.Name)
+	cjClient := clientSet.BatchV1().CronJobs(ns.Name)
 
 	stopCh := make(chan struct{})
 	defer close(stopCh)

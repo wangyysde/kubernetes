@@ -29,7 +29,7 @@ const (
 
 var (
 	// CronJobGroupVersionResourceBeta unambiguously identifies a resource of cronjob with beta status
-	CronJobGroupVersionResourceBeta = schema.GroupVersionResource{Group: "batch", Version: "v1beta1", Resource: "cronjobs"}
+	CronJobGroupVersionResourceBeta = schema.GroupVersionResource{Group: "batch", Version: "v1", Resource: "cronjobs"}
 
 	// WebserverImage is the fully qualified URI to the Httpd image
 	WebserverImage = imageutils.GetE2EImage(imageutils.Httpd)

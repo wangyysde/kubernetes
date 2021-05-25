@@ -161,12 +161,6 @@ func GetEtcdStorageDataForNamespace(namespace string) map[schema.GroupVersionRes
 		},
 		// --
 
-		// k8s.io/kubernetes/pkg/apis/batch/v1beta1
-		gvr("batch", "v1beta1", "cronjobs"): {
-			Stub:             `{"metadata": {"name": "cjv1beta1"}, "spec": {"jobTemplate": {"spec": {"template": {"metadata": {"labels": {"controller-uid": "uid0"}}, "spec": {"containers": [{"image": "` + image + `", "name": "container0"}], "dnsPolicy": "ClusterFirst", "restartPolicy": "Never"}}}}, "schedule": "* * * * *"}}`,
-			ExpectedEtcdPath: "/registry/cronjobs/" + namespace + "/cjv1beta1",
-		},
-		// --
 
 		// k8s.io/kubernetes/pkg/apis/certificates/v1beta1
 		gvr("certificates.k8s.io", "v1beta1", "certificatesigningrequests"): {
