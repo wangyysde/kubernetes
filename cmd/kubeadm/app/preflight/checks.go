@@ -36,6 +36,7 @@ import (
 
 	"github.com/PuerkitoBio/purell"
 	"github.com/pkg/errors"
+	v1 "k8s.io/api/core/v1"
 	netutil "k8s.io/apimachinery/pkg/util/net"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/validation"
@@ -821,6 +822,7 @@ func getEtcdVersionResponse(client *http.Client, url string, target interface{})
 type ImagePullCheck struct {
 	runtime   utilruntime.ContainerRuntime
 	imageList []string
+	cfg       *kubeadmapi.InitConfiguration
 }
 
 // Name returns the label for ImagePullCheck
@@ -831,8 +833,11 @@ func (ImagePullCheck) Name() string {
 // Check pulls images required by kubeadm. This is a mutating check
 func (ipc ImagePullCheck) Check() (warnings, errorList []error) {
 	for _, image := range ipc.imageList {
+		if ipc.cfg.NodeRegistration.ImagePullPolicy == string(v1.PullNever) {
+			continue
+		}
 		ret, err := ipc.runtime.ImageExists(image)
-		if ret && err == nil {
+		if ret && err == nil && ipc.cfg.NodeRegistration.ImagePullPolicy == string(v1.PullIfNotPresent) {
 			klog.V(1).Infof("image exists: %s", image)
 			continue
 		}
@@ -1061,7 +1066,7 @@ func RunPullImagesCheck(execer utilsexec.Interface, cfg *kubeadmapi.InitConfigur
 	}
 
 	checks := []Checker{
-		ImagePullCheck{runtime: containerRuntime, imageList: images.GetControlPlaneImages(&cfg.ClusterConfiguration)},
+		ImagePullCheck{runtime: containerRuntime, imageList: images.GetControlPlaneImages(&cfg.ClusterConfiguration), cfg: cfg},
 	}
 	return RunChecks(checks, os.Stderr, ignorePreflightErrors)
 }

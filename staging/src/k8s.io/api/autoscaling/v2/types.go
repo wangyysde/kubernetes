@@ -157,7 +157,7 @@ type ScalingPolicySelect string
 
 const (
 	// MaxChangePolicySelect  selects the policy with the highest possible change.
-	MaxChangePolicySelect  ScalingPolicySelect = "MaxChange"
+	MaxChangePolicySelect ScalingPolicySelect = "MaxChange"
 	// MinChangePolicySelect selects the policy with the lowest possible change.
 	MinChangePolicySelect ScalingPolicySelect = "MinChange"
 	// DisabledPolicySelect disables the scaling in this direction.
@@ -228,7 +228,7 @@ const (
 	// scale target (e.g. CPU or memory).  Such metrics are built in to
 	// Kubernetes, and have special scaling options on top of those available
 	// to normal per-pod metrics (the "pods" source).
-	PodResourceMetricSourceType  MetricSourceType = "PodResource"
+	PodResourceMetricSourceType MetricSourceType = "PodResource"
 	// ContainerResourceMetricSourceType is a resource metric known to Kubernetes, as
 	// specified in requests and limits, describing a single container in each pod in the current
 	// scale target (e.g. CPU or memory).  Such metrics are built in to

@@ -28,7 +28,7 @@ import "k8s.io/apimachinery/pkg/runtime/generated.proto";
 import "k8s.io/apimachinery/pkg/runtime/schema/generated.proto";
 
 // Package-wide variables from generator "generated".
-option go_package = "v2beta2";
+option go_package = "v2";
 
 // ContainerResourceMetricSource indicates how to scale on a resource metric known to
 // Kubernetes, as specified in requests and limits, describing each pod in the
@@ -129,7 +129,7 @@ message HPAScalingRules {
   optional int32 stabilizationWindowSeconds = 3;
 
   // selectPolicy is used to specify which policy should be used.
-  // If not set, the default value MaxChangePolicySelect is used.
+  // If not set, the default value MaxChangePolicySelect  is used.
   // +optional
   optional string selectPolicy = 1;
 
