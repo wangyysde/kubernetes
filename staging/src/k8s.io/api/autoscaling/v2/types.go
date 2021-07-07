@@ -227,7 +227,7 @@ const (
 	// scale target (e.g. CPU or memory).  Such metrics are built in to
 	// Kubernetes, and have special scaling options on top of those available
 	// to normal per-pod metrics (the "pods" source).
-	PodResourceMetricSourceType MetricSourceType = "PodResource"
+	PodResourceMetricSourceType MetricSourceType = "Resource"
 	// ContainerResourceMetricSourceType is a resource metric known to Kubernetes, as
 	// specified in requests and limits, describing a single container in each pod in the current
 	// scale target (e.g. CPU or memory).  Such metrics are built in to

@@ -49,7 +49,6 @@ var (
 	scaleDownPeriod int32 = 15
 	// Currently we can set the downscaleStabilizationWindow from the command line
 	// So we can not rewrite the command line option from here
-	scaleDownStabilizationSeconds *int32 = nil
 	scaleDownLimitPercent    int32 = 100
 	defaultHPAScaleDownRules       = autoscalingv2.HPAScalingRules{
 		StabilizationWindowSeconds: nil,
